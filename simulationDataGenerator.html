@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+    crossorigin="anonymous"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div class="container mt-5">
+        <form onsubmit="submitForm(event)">
+          <div class="row">
+            <div class="col-4">
+              <div class="input-group mb-3">
+                <span class="input-group-text">상담사</span
+                >
+                <select id="agentDataList" class="form-select" oninput="setAgent()" required>
+                </select>
+              </div>
+            </div>
+            <div class="col">
+              <div class="input-group mb-3">
+                <span class="input-group-text">apId</span
+                ><input
+                  type="text"
+                  class="form-control"
+                  id="apId"
+                  onkeyup="updateScript()"
+                />
+              </div>
+            </div>
+            <div class="col">
+              <div class="input-group mb-3">
+                <span class="input-group-text">callId</span
+                ><input
+                  type="text"
+                  class="form-control"
+                  id="callId"
+                  onkeyup="updateScript()"
+                />
+              </div>
+            </div>
+            <div class="col">
+              <div class="input-group mb-3">
+                <span class="input-group-text">rec_key</span
+                ><input
+                  type="text"
+                  class="form-control"
+                  id="recKey"
+                  onkeyup="updateScript()"
+                  list="reckeyList"
+                />
+                <datalist id="reckeyList">
+                  <option value="reckey00000028"></option>
+                </datalist>
+              </div>
+            </div>
+          </div>
+          <div style="text-align: center">
+            <input
+              type="button"
+              class="btn btn-secondary"
+              value="RANDOM"
+              onclick="randomGenerator()"
+            />
+          </div>
+          <div class="d-flex justify-content-between mb-3">
+            <h3>STT</h3>
+            <button
+              type="button"
+              class="btn btn-dark"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseSTT"
+              aria-expanded="false"
+              aria-controls="collapseSTT"
+            >
+              details
+            </button>
+          </div>
+          <div id="collapseSTT" class="collapse">
+            <div id="sttKeyDiv" class="d-flex flex-wrap card card-body"></div>
+          </div>
+          <div class="position-relative">
+            <textarea
+              name=""
+              id="sttResult"
+              class="text-nowrap form-control mb-3"
+              style="height: 100px"
+            ></textarea>
+            <div class="position-absolute top-0 end-0">
+              <button
+                type="button"
+                class="btn btn-lg btn-secondary"
+                style="z-index: 2; text-align: center"
+                onclick="copy('sttResult')"
+              >
+                copy
+              </button>
+              <button
+                type="button"
+                class="btn btn-lg btn-secondary"
+                style="z-index: 2; text-align: center"
+                onclick="download('stt_testData.txt', 'sttResult')"
+              >
+                download
+              </button>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between mb-3">
+            <h3>CALL INFO</h3>
+            <button
+              type="button"
+              class="btn btn-dark"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseCallId"
+              aria-expanded="false"
+              aria-controls="collapseCallId"
+            >
+              details
+            </button>
+          </div>
+          <div id="collapseCallId" class="collapse">
+            <div
+              id="callIdKeyDiv"
+              class="d-flex flex-wrap card card-body"
+            ></div>
+          </div>
+          <div class="position-relative">
+            <textarea
+              name=""
+              id="callInfoResult"
+              class="text-nowrap form-control mb-3"
+              style="height: 100px"
+            ></textarea>
+            <div class="position-absolute top-0 end-0">
+              <button
+                type="button"
+                class="btn btn-lg btn-secondary"
+                style="z-index: 2; text-align: center"
+                onclick="copy('callInfoResult')"
+              >
+                copy
+              </button>
+              <button
+                type="button"
+                class="btn btn-lg btn-secondary"
+                style="z-index: 2; text-align: center"
+                onclick="download('callInfo_testData.txt', 'callInfoResult')"
+              >
+                download
+              </button>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between mb-3">
+            <h3>JOIN PRODUCT</h3>
+            <button
+              type="button"
+              class="btn btn-dark"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseJoinProduct"
+              aria-expanded="false"
+              aria-controls="collapseJoinProduct"
+            >
+              details
+            </button>
+          </div>
+          <div id="collapseJoinProduct" class="collapse">
+            <div
+              id="joinProductKeyDiv"
+              class="d-flex flex-wrap card card-body"
+            ></div>
+          </div>
+          <div class="position-relative">
+            <textarea
+              name=""
+              id="joinProductResult"
+              class="text-nowrap form-control mb-3"
+              style="height: 100px"
+              ></textarea>
+              <div class="position-absolute top-0 end-0">
+                <button
+                type="button"
+                class="btn btn-lg btn-secondary"
+                style="z-index: 2; text-align: center"
+                onclick="copy('joinProductResult')"
+                >
+                copy
+              </button>
+              <button
+              type="button"
+              class="btn btn-lg btn-secondary"
+              style="z-index: 2; text-align: center"
+              onclick="download('joinProduct_testData.txt', 'joinProductResult')"
+              >
+              download
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+  crossorigin="anonymous"
+  ></script>
+</body>
+
+<script>
+  var apId = "";
+  var ext = "";
+  var recKey = "";
+  var callId = "";
+  var empId = "";
+  var empName = "";
+  var skipKeys = ["apId", "ext", "recKey", "callId", "index", "dir", "cmd", "dateTime", "stt"];
+  let firstNameLetters = "김이박최정강조윤장임한오서신권황안송류전홍고문양손배조백허유남심노정하곽성차주우구신임나전민유진지엄채원천방공강현함변염양변여추노도소신석선설마주연방위표명기반왕모장남탁국여진구";
+  let lastNameLetters = "가강건경고관광구규근기길나남노누다단달담대덕도동두라래로루리마만명무문미민바박백범별병보사산상새서석선설섭성세소솔수숙순숭슬승시신아안애엄여연영예오옥완요용우원월위유윤율으은의이익인일자잔장재전정제조종주준중지진찬창채천철초춘충치탐태택판하한해혁현형혜호홍화환회효훈휘희운모배부림봉혼황량린을비솜공면탁온디항후려균묵송욱휴언들견추걸삼열웅분변양출타흥겸곤번식란더손술반빈실직악람권복심헌엽학개평늘랑향울련";
+  function submitForm(e) {
+    e.preventDefault();
+    updateScript();
+    return false;
+  }
+  function randomGenerator() {
+    apId = Math.random()
+    .toString(36)
+    .replace(/[^a-z]+/g, "")
+    .substr(0, 7);
+    callId = Math.random()
+    .toString(36)
+    .replace(/[^a-z]+/g, "")
+    .substr(0, 7);
+    const dom = document.getElementById("agentDataList") 
+    ext = dom.options[dom.selectedIndex].text.split(" ")[2]
+    recKey = callId + ext;
+    document.getElementById("apId").value = apId;
+    document.getElementById("callId").value = callId;
+    document.getElementById("recKey").value = recKey;
+    empId = document.getElementById("agentDataList").value
+    updateScript();
+  }
+  function updateScript() {
+    if(empId == null || empId == "") empId = "agent001"
+    var custId = newCustId();
+    var inputTel = newInputTel();
+    var gender = parseInt(inputTel.charAt(inputTel.length-1)) % 2 === 0? "남": "여"
+    var age = Math.floor(Math.random() * 60 + 20)
+    var callEndTime = newDate(0);
+    var callStartTime = newDate(Math.random() * 30)
+    var callInfoStartTime = callStartTime.replaceAll('-', '').replaceAll(' ', '').replaceAll(':','').slice(0, 14);
+    var timeDiff = (new Date(callEndTime) - new Date(callStartTime))
+    var callMinutes = ""+ Math.floor((timeDiff / 60000))
+    var callSeconds = "" + (timeDiff % 60)
+    var callCompleteTime = callMinutes.padStart(2, '0') + ":" + callSeconds.padStart(2, '0')
+
+    apId = document.getElementById("apId").value;
+    recKey = document.getElementById("recKey").value;
+    callId = document.getElementById("callId").value;
+    var randomName = randName()
+    var basicCallInfo = `{ "callId": "${callId}", "apId": "${apId}", "callStartTime": "${callInfoStartTime}", "callEndTime": "${callEndTime}", "callCompletTime": "", "empId": "${empId}", "custId": "${custId}", "inputTel": "${inputTel}", "ioGbn": "OB", "ext": "${ext}", "custName": "${randomName}", "age": "${age}", "addressArea": "서울시 구로구 디지털로 30길 31", "joinNo":"029874563","email":"test@emai.com","gender":"${gender}"}`;
+    var basicJoinProduct = `{"callId": "${callId}", "ext": "${ext}","totalCount":"2","accountList" : [{"custNo" : "고객번호","realNameNo" : "실명번호","custName" : "${randomName}","accountNo" : "계좌번호","receAccountCode" : "수신계좌상태코드","creatDate" : "2022080112121200","productName" : "상품명","accountBalance" : "계좌잔액","productCode" : "상품코드","productMCode" : "상품중분류코드","subjectCode" : "과목코드","contractAmt" : "계약금액","withdrawAmt" : "출금가능금액","subjectCodeS1" : "과목분류코드","simIntComInt" : "단리복리구분코드","monthlyAmt" : "월납입금액","padd" : "응당일","exptDate" : ""},{"custNo" : "고객번호","realNameNo" : "실명번호","custName" : "${randomName}","accountNo" : "계좌번호","receAccountCode" : "수신계좌상태코드","creatDate" : "2020122212121200","productName" : "상품명","accountBalance" : "계좌잔액","productCode" : "상품코드","productMCode" : "상품중분류코드","subjectCode" : "과목코드","contractAmt" : "계약금액","withdrawAmt" : "출금가능금액","subjectCodeS1" : "과목분류코드","simIntComInt" : "단리복리구분코드","monthlyAmt" : "월납입금액","padd" : "응당일","exptDate" : "2050122212121200"}]}`;
+
+    let basicSTT = `{ "cmd": "S", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(32)}"}
+{ "cmd": "I", "recKey": "${recKey}", "callId": "${callId}", "ext": "${ext}", "dateTime": "${callStartTime}", "tel": "${inputTel}"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(31)}", "dir": "T", "index": "0", "stt": "0|6|s\\n6|36|다이퀘스트\\n36|39|s\\n39|47|상담사\\n47|75|홍길동\\n75|114|입니다\\n114|150|무엇을\\n150|260|도와드릴까요\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(30)}", "dir": "R", "index": "1", "stt": "0|288|s\\n288|327|햇살론\\n327|390|대출\\n327|444|문의드려요\\n444|450|s\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(29)}", "dir": "T", "index": "2", "stt": "0|494|s\\n288|327|감사합니다\\n500|520|고객님\\n520|544|s\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(28)}", "dir": "R", "index": "3", "stt": "0|560|이\\n560|627|파워\\n627|675|자유적금이\\n675|732|어떤\\n732|777|상품\\n777|783|s\\n783|798|이에요\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(27)}", "dir": "T", "index": "4", "stt": "906|1017|s\\n1017|1074|상담에\\n1074|1086|s\\n1086|1134|앞서\\n1134|1137|s\\n1137|1182|본인\\n1182|1266|확인\\n1266|1272|s\\n1272|1305|도와\\n1305|1308|s\\n1308|1374|드리겠습니다\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(26)}", "dir": "T", "index": "5", "stt": "0|1397|s\\n1400|1450|본인\\n1450|1480|맞습니까\\n1450|1500|s\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(25)}", "dir": "R", "index": "5", "stt": "0|1550|s\\n1550|1600|네\\n1600|1630|맞습니다\\n1630|1631|s\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(24)}", "dir": "T", "index": "5", "stt": "0|1640|s\\n1640|1700|성함이\\n1700|1750|어떻게\\n1750|1800|되나요\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(23)}", "dir": "R", "index": "5", "stt": "0|1830|s\\n1830|1890|홍길동\\n1890|1930|입니다\\n1930|1950|s\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(22)}", "dir": "T", "index": "5", "stt": "0|1960|s\\n1960|2000|주소는\\n2000|2050|서울시\\n2050|2100|구로구\\n2100|2160|디지털로\\n2160|2200|나머지\\n2200|2230|주소는\\n2230|2270|어떻게\\n2270|2310|되세요\\n2310|2315|s\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(21)}", "dir": "R", "index": "5", "stt": "0|2340|s\\n2340|2380|삼십길\\n2380|2450|삼십일입니다\\n2450|2470|s\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(20)}", "dir": "T", "index": "5", "stt": "0|2480|s\\n2500|2530|소중한\\n2530|2550|정보\\n2550|2590|확인\\n2590|2630|감사합니다\\n2630|2640|s\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(19)}", "dir": "T", "index": "6", "stt": "0|2650|s\\n2650|2680|문의주신\\n2650|2680|희망보험에\\n2650|2680|대해서\\n2680|2720|상담\\n2720|2760|도와드리겠습니다\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(18)}", "dir": "R", "index": "6", "stt": "0|2800|s\\n2800|2880|희망보험\\n2880|2933|신계약\\n2933|3000|접수를\\n3000|3090|하려고요\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(17)}", "dir": "R", "index": "6", "stt": "0|3150|s\\n3150|3200|방문해서\\n3200|3250|가입해도\\n3290|3333|되나요\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(16)}", "dir": "T", "index": "6", "stt": "0|3400|s\\n3400|3430|네 고객님\\n3430|3490|가까운\\n3490|3520|지점에서\\n3520|3560|가능하십니다\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(15)}", "dir": "R", "index": "6", "stt": "0|3600|s\\n3600|3650|혹시\\n3650|3680|가입을 했는데\\n3680|3720|취소하고 싶을때는\\n3720|3798|어떻게 하나요\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(14)}", "dir": "T", "index": "6", "stt": "0|3818|s\\n3818|3848|보험을\\n3848|3878|가입한날로부터\\n3878|3908|십오일이내\\n3908|3938|청약을\\n3938|4038|해지할 수 있습니다\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(13)}", "dir": "R", "index": "6", "stt": "0|4060|s\\n3818|3848|그렇군요\\n3818|3848|다른\\n3818|3848|유의사항이\\n3818|3848|있을까요\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(12)}", "dir": "T", "index": "6", "stt": "0|1661|s\\n3818|3848|보험약관에\\n3818|3848|의해서\\n3818|3848|규정을\\n3818|3848|지키지 않거나\\n3818|3848|악용하면\\n3818|3848|제지급 취소가 될 수 있습니다\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(11)}", "dir": "T", "index": "5", "stt": "0|3866|s\\n3866|3900|자세한 사항은 가입 시 상담 받아보실 수 있습니다\\n3900|3910|s\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(10)}", "dir": "R", "index": "5", "stt": "0|3930|s\\n3930|3960|네 감사합니다.\\n3960|3970|s\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(9)}", "dir": "T", "index": "5", "stt": "0|3980|s\\n3980|4000|더 궁금하신 사항 없으신가요\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(8)}", "dir": "R", "index": "5", "stt": "0|4100|s\\n4100|4160|네 없습니다\\n4160|4180|s\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(7)}", "dir": "T", "index": "5", "stt": "0|4190|s\\n4190|4220|바쁘신 중에 귀한 시간 감사합니다 즐거운 하루 되세요\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(6)}", "dir": "T", "index": "5", "stt": "0|4270|s\\n4270|4260|지금까지 상담사 홍길동이였습니다\\n4260|4290|s\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(5)}", "dir": "R", "index": "6", "stt": "0|4295|s\\n4295|4333|네\\n4333|4363|감사합니다\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(4)}", "dir": "T", "index": "6", "stt": "0|4363|s\\n4363|4403|네\\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(3)}", "dir": "T", "index": "6", "stt": "0|4407| \\n"}
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(2)}", "dir": "T", "index": "E" }
+{ "cmd": "T", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${newDate(1)}", "dir": "R", "index": "E" }
+{ "cmd": "E", "recKey": "${recKey}", "ext": "${ext}", "dateTime": "${callEndTime}"}`
+
+      const newSTT = generateNewSTT(basicSTT);
+
+      parseSttData(basicSTT);
+      parseCallInfoData(basicCallInfo);
+      parseJoinProductData(basicJoinProduct);
+      document.getElementById("sttResult").value = newSTT;
+      document.getElementById("callInfoResult").value = basicCallInfo;
+      document.getElementById("joinProductResult").value = basicJoinProduct;
+    }
+    function copy(target) {
+      var copyTarget = document.getElementById(target);
+      if (copyTarget.value.length == 0) {
+        return false;
+      }
+      copyTarget.select();
+      copyTarget.setSelectionRange(0, 99999);
+      navigator.clipboard.writeText(copyTarget.value);
+      alert("복사되었습니다.");
+    }
+    function download(filename, text) {
+      text = document.getElementById(text).value;
+      if (text.length == 0) {
+        return false;
+      }
+      var element = document.createElement("a");
+      element.setAttribute(
+        "href",
+        "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+        );
+        element.setAttribute("download", filename);
+        
+        element.style.display = "none";
+        document.body.appendChild(element);
+        
+        element.click();
+        
+        document.body.removeChild(element);
+      }
+      function parseSttData(data) {
+        var dataLineArr = data.split("\n");
+        var totalEntryList = [];
+      dataLineArr.forEach((line) => {
+        var lineJSON = JSON.parse(line);
+        var lineEntries = Object.entries(lineJSON);
+        totalEntryList = totalEntryList.concat(lineEntries);
+      });
+      var totalEntryMap = new Map(totalEntryList);
+      var DOMstring = `<div class="row">`;
+        var rowCount = 0;
+        totalEntryMap.forEach((value, key) => {
+          if (!skipKeys.includes(key)) {
+            DOMstring += `
+            <div class="input-group mb-3 col">
+              <span class="input-group-text">${key}</span>
+              <input type="text" id="stt${value}" class="form-control" value="${value}" onkeyup="updateSTTDetail('${key}', this.value)" />
+              </div>`;
+              rowCount += 1;
+              if (rowCount % 3 == 0) {
+                DOMstring += `</div><div class="row">`;
+                }
+              }
+            });
+            DOMstring += "</div>";
+            document.getElementById("sttKeyDiv").innerHTML = DOMstring;
+          }
+          function parseCallInfoData(data) {
+            var callInfoJSON = JSON.parse(data);
+            var DOMstring = `<div class="row">`;
+              var rowCount = 0;
+              $.each(callInfoJSON, (key, value) => {
+                if (!skipKeys.includes(key)) {
+                  DOMstring += `
+                  <div class="input-group mb-3 col">
+                    <span class="input-group-text">${key}</span>
+                    <input type="text" id="callId${key}" class="form-control" value="${value}" onkeyup="updateDetail('callInfoResult', '${key}', this.value)" />
+                    </div>`;
+                    rowCount += 1;
+                    if (rowCount % 3 == 0) {
+                      DOMstring += `</div><div class="row">`;
+                      }
+                    }
+                  });
+                  DOMstring += "</div>";
+                  document.getElementById("callIdKeyDiv").innerHTML = DOMstring;
+            }
+            function parseJoinProductData(data) {
+              var joinProductJSON = JSON.parse(data);
+              var DOMstring = `<div class="row">`;
+                var rowCount = 0;
+                $.each(joinProductJSON, (key, value) => {
+                  if (!skipKeys.includes(key)) {
+                    if (typeof value == "object") {
+                      var accountListStr = "";
+                      value.forEach((item, index) => {
+                        var account = JSON.stringify(item)
+                        if(index != 0) DOMstring += "<hr><hr>"
+                        $.each(item, (accountKey, accountValue) =>{
+                          DOMstring += `
+                          <div class="input-group mb-3 col">
+                            <span class="input-group-text">${accountKey}</span>
+                            <input type="text" id="joinProduct${accountKey+index}" class="form-control" value="${accountValue}" onkeyup="updateJoinProductDetail('${accountKey}', ${index}, this.value)"/>
+                            </div>`;
+                            rowCount += 1;
+                if (rowCount % 3 == 0) {
+                  DOMstring += `</div><div class="row">`;
+                  }
+                })
+              });
+            } 
+          }
+        });
+        DOMstring += "</div>";
+        document.getElementById("joinProductKeyDiv").innerHTML = DOMstring;
+      }
+      function updateDetail(target, key, value) {
+        if(key === "empId") empId = value
+        var textAreaVal = JSON.parse(document.getElementById(target).value);
+      textAreaVal[key] = value;
+      document.getElementById(target).value = JSON.stringify(textAreaVal);
+    }
+    function updateJoinProductDetail(key, index, value){
+      var textAreaVal = JSON.parse(document.getElementById("joinProductResult").value);
+      textAreaVal.accountList[index][key] = value;
+      document.getElementById("joinProductResult").value = JSON.stringify(textAreaVal);
+    }
+    function updateSTTDetail(key, value) {
+      var sttVal = document.getElementById("sttResult").value;
+      var sttLineArr = sttVal.split("\n");
+      var sttFinalString = "";
+      sttLineArr.forEach((line) => {
+        var lineJSON = JSON.parse(line);
+        lineJSON[key] = value;
+        sttFinalString += JSON.stringify(lineJSON) + "\n";
+      });
+      document.getElementById("sttResult").value = sttFinalString.trimRight();
+    }
+    function newDate(minutes) {
+      var date = new Date(new Date() - minutes * 60000)
+      var tempYr = date.getFullYear();
+      var tempMonth = (date.getMonth() + 1).toString().padStart(2, "0");
+      var tempDay = date.getDate().toString().padStart(2, "0");
+      var tempHr = date.getHours().toString().padStart(2, "0");
+      var tempMin = date.getMinutes().toString().padStart(2, "0");
+      var tempSec = date.getSeconds().toString().padStart(2, "0");
+      var tempMilsec = date.getMilliseconds();
+      var dateTime = `${tempYr}${tempMonth}${tempDay}${tempHr}${tempMin}${tempSec}`;
+      return dateTime;
+    }
+    function randName() {
+      let text = "";
+      for (var i = 0; i < 1; i++)
+      text += firstNameLetters.charAt(Math.floor(Math.random() * firstNameLetters.length));
+      for (var i = 0; i < 2; i++)
+      text += lastNameLetters.charAt(Math.floor(Math.random() * lastNameLetters.length));
+      return text;
+    }
+    function newCustId(){
+      let randomNo = "" + Math.floor(Math.random() * 10000)
+      let newId = "client" + randomNo.padStart(5, '0')
+      return newId
+    }
+    function newInputTel(){
+      let randomNo = "" + Math.floor(Math.random() * 100000000)
+      let newTel = "010" + randomNo.padStart(8, '0')
+      return newTel
+    }
+    const fullAgentList = [{"deptCode":"01","deptName":"KB 저축은행","companyCode":"KM0","agentId":"상담원 아이디 없음","agentName":"상담원 이름 없음","ext":"내선번호 없음","agentTitle":"상담원 직급 없음","isAdmin":"관리자 여부 정보 없음"},{"deptCode":"0101","deptName":"센터1","companyCode":"KM0","agentId":"상담원 아이디 없음","agentName":"상담원 이름 없음","ext":"내선번호 없음","agentTitle":"상담원 직급 없음","isAdmin":"관리자 여부 정보 없음"},{"deptCode":"010101","deptName":"부서1","companyCode":"KM0","agentId":"상담원 아이디 없음","agentName":"상담원 이름 없음","ext":"내선번호 없음","agentTitle":"상담원 직급 없음","isAdmin":"관리자 여부 정보 없음"},{"deptCode":"01010101","deptName":"고객대응1팀","companyCode":"KM0","agentId":"admin001","agentName":"김관리자","ext":"2899999","agentTitle":"팀장","isAdmin":"Y"},{"deptCode":"01010101","deptName":"고객대응1팀","companyCode":"KM0","agentId":"agent032","agentName":"최부식","ext":"2855577","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010101","deptName":"고객대응1팀","companyCode":"KM0","agentId":"agent001","agentName":"김기억","ext":"2811111","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010101","deptName":"고객대응1팀","companyCode":"KM0","agentId":"agent002","agentName":"남니은","ext":"2822222","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010101","deptName":"고객대응1팀","companyCode":"KM0","agentId":"agent003","agentName":"당디귿","ext":"2833333","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010101","deptName":"고객대응1팀","companyCode":"KM0","agentId":"agent020","agentName":"이미연","ext":"2855565","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010101","deptName":"고객대응1팀","companyCode":"KM0","agentId":"agent021","agentName":"박현선","ext":"2855566","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010101","deptName":"고객대응1팀","companyCode":"KM0","agentId":"agent022","agentName":"김혜리","ext":"2855567","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010101","deptName":"고객대응1팀","companyCode":"KM0","agentId":"agent023","agentName":"최영욱","ext":"2855568","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010101","deptName":"고객대응1팀","companyCode":"KM0","agentId":"agent024","agentName":"이찬송","ext":"2855569","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010101","deptName":"고객대응1팀","companyCode":"KM0","agentId":"agent025","agentName":"김선진","ext":"2855570","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010101","deptName":"고객대응1팀","companyCode":"KM0","agentId":"agent026","agentName":"박선우","ext":"2855571","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010101","deptName":"고객대응1팀","companyCode":"KM0","agentId":"agent027","agentName":"백정환","ext":"2855572","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010101","deptName":"고객대응1팀","companyCode":"KM0","agentId":"agent028","agentName":"전성모","ext":"2855573","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010101","deptName":"고객대응1팀","companyCode":"KM0","agentId":"agent029","agentName":"김관영","ext":"2855574","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010101","deptName":"고객대응1팀","companyCode":"KM0","agentId":"agent030","agentName":"박성훈","ext":"2855575","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010101","deptName":"고객대응1팀","companyCode":"KM0","agentId":"agent031","agentName":"이도기","ext":"2855576","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010102","deptName":"고객대응2팀","companyCode":"KM0","agentId":"admin002","agentName":"박관리자","ext":"2800009","agentTitle":"팀장","isAdmin":"Y"},{"deptCode":"01010102","deptName":"고객대응2팀","companyCode":"KM0","agentId":"agent004","agentName":"리리을","ext":"2810015","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010102","deptName":"고객대응2팀","companyCode":"KM0","agentId":"agent005","agentName":"마미음","ext":"2855555","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010102","deptName":"고객대응2팀","companyCode":"KM0","agentId":"agent011","agentName":"김예찬","ext":"2855556","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010102","deptName":"고객대응2팀","companyCode":"KM0","agentId":"agent012","agentName":"박하늘","ext":"2855557","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010102","deptName":"고객대응2팀","companyCode":"KM0","agentId":"agent014","agentName":"한진성","ext":"2855559","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010102","deptName":"고객대응2팀","companyCode":"KM0","agentId":"agent015","agentName":"장성욱","ext":"2855560","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010102","deptName":"고객대응2팀","companyCode":"KM0","agentId":"agent016","agentName":"신승환","ext":"2855561","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010102","deptName":"고객대응2팀","companyCode":"KM0","agentId":"agent017","agentName":"조현","ext":"2855562","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010102","deptName":"고객대응2팀","companyCode":"KM0","agentId":"agent018","agentName":"황유라","ext":"2855563","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010102","deptName":"고객대응2팀","companyCode":"KM0","agentId":"agent019","agentName":"강민호","ext":"2855564","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010102","deptName":"고객대응2팀","companyCode":"KM0","agentId":"agent013","agentName":"이현우","ext":"2855558","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010102","deptName":"고객대응2팀","companyCode":"KM0","agentId":"agent006","agentName":"박비읍","ext":"2860000","agentTitle":"대리","isAdmin":"N"},{"deptCode":"01010103","deptName":"고객대응3팀","companyCode":"KM0","agentId":"admin003","agentName":"주관리자","ext":"2888888","agentTitle":"팀장","isAdmin":"Y"},{"deptCode":"01010103","deptName":"고객대응3팀","companyCode":"KM0","agentId":"agent037","agentName":"배수진","ext":"2855584","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010103","deptName":"고객대응3팀","companyCode":"KM0","agentId":"agent008","agentName":"오이응","ext":"2880000","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010103","deptName":"고객대응3팀","companyCode":"KM0","agentId":"agent009","agentName":"오지환","ext":"2844444","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010103","deptName":"고객대응3팀","companyCode":"KM0","agentId":"agent010","agentName":"깁팔순","ext":"2855555","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010103","deptName":"고객대응3팀","companyCode":"KM0","agentId":"agent033","agentName":"문모은","ext":"2855580","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010103","deptName":"고객대응3팀","companyCode":"KM0","agentId":"agent034","agentName":"채수현","ext":"2855581","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010103","deptName":"고객대응3팀","companyCode":"KM0","agentId":"agent035","agentName":"한희진","ext":"2855582","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010103","deptName":"고객대응3팀","companyCode":"KM0","agentId":"agent036","agentName":"김희영","ext":"2855583","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010103","deptName":"고객대응3팀","companyCode":"KM0","agentId":"agent038","agentName":"정승환","ext":"2855585","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010103","deptName":"고객대응3팀","companyCode":"KM0","agentId":"agent039","agentName":"박진영","ext":"2855586","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010103","deptName":"고객대응3팀","companyCode":"KM0","agentId":"agent040","agentName":"양현석","ext":"2855587","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010103","deptName":"고객대응3팀","companyCode":"KM0","agentId":"agent041","agentName":"김건호","ext":"2855588","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010103","deptName":"고객대응3팀","companyCode":"KM0","agentId":"agent042","agentName":"서태현","ext":"2855589","agentTitle":"사원","isAdmin":"N"},{"deptCode":"01010103","deptName":"고객대응3팀","companyCode":"KM0","agentId":"agent007","agentName":"송시옷","ext":"2870000","agentTitle":"대리","isAdmin":"N"}]
+    const agentList = fullAgentList.filter((e) => e.deptCode.length === 8);
+    var teamList = []
+    function findTeam(){
+      agentList.forEach((agent) =>{
+        if(!teamList.includes(agent.deptCode)){
+          teamList.push(agent.deptCode)
+        }
+      })
+    }
+    findTeam();
+    setAgentDataList();
+    function setAgentDataList(){
+      var domString = "";
+      teamList.forEach((teamNo)=>{
+        domString += `<option style="background-color:grey;color:white" disabled>${teamNo.charAt(teamNo.length-1)}팀</option>`
+        agentList.forEach((agent)=>{
+          if(agent.deptCode === teamNo && agent.isAdmin !== "Y"){
+            domString += `<option value="${agent.agentId}">${agent.agentName} ${agent.agentId} ${agent.ext}</option>`
+          }
+        })
+      })
+      document.getElementById("agentDataList").innerHTML = domString
+    }
+    function setAgent(){
+      const agentId = document.getElementById("agentDataList").value;
+      const agent = agentList.filter((e)=> e.agentId === agentId)[0]
+      empId = agent.agentId
+      empName = agent.agentName
+      ext = agent.ext
+      randomGenerator()
+    }
+    function generateNewSTT(stt){
+      var lines = stt.split("\n");
+      var newLines = []
+      let dirTIndex = 0
+      let dirRIndex = 0
+      let currentMs = 0
+      lines.forEach((line, idx, arr) => {
+        var lineJSON = JSON.parse(line);
+        if(lineJSON.stt){
+          if(lineJSON.dir === "T") lineJSON.index = `${dirTIndex++}`
+          if(lineJSON.dir === "R") {
+            if(dirRIndex> 1 && JSON.parse(arr[idx-1]).dir !== "R" ){
+              currentMs -= 2000
+            }
+            lineJSON.index = `${dirRIndex++}`
+          }
+          let regex = RegExp("(\\d+)\\|(\\d+)", "gm")
+          let matchAllResult = [...lineJSON.stt.matchAll(regex)]
+          for(var i=0; i<matchAllResult.length; i++){
+            var randNo = Math.floor(Math.random()*5000)
+            var newTimeWindow = currentMs + "|" + (currentMs + randNo)
+            if(i === 0) newTimeWindow = 0 + "|" + (currentMs + randNo)
+            lineJSON.stt = lineJSON.stt.replace(matchAllResult[i][0], newTimeWindow)
+            currentMs += randNo
+          }
+        }
+        newLines.push(JSON.stringify(lineJSON) + "\n")
+      });
+      return newLines.join("")
+    }
+    </script>
+</html>
