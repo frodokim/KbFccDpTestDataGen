@@ -520,7 +520,7 @@
           let regex = RegExp("(\\d+)\\|(\\d+)", "gm")
           let matchAllResult = [...lineJSON.stt.matchAll(regex)]
           for(var i=0; i<matchAllResult.length; i++){
-            var randNo = Math.floor(Math.random()*5000)
+            var randNo = Math.floor(Math.random()*2000)
             var newTimeWindow = currentMs + "|" + (currentMs + randNo)
             if(i === 0) newTimeWindow = 0 + "|" + (currentMs + randNo)
             lineJSON.stt = lineJSON.stt.replace(matchAllResult[i][0], newTimeWindow)
